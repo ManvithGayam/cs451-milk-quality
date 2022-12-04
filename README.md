@@ -6,6 +6,4 @@
 - Application Hosted on Heroku
   All the dependences can be found in the requirements.txt
 
-App link hosted on streamlit team: h
-
 App link on heroku:
