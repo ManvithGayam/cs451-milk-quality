@@ -6,4 +6,4 @@
 - Application Hosted on Heroku
   All the dependences can be found in the requirements.txt
 
-App link on heroku:
+App link on streamlit: [https://milkquality.streamlit.app/](https://milkquality.streamlit.app/)
