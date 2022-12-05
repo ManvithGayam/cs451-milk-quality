@@ -11,3 +11,7 @@ App link on streamlit: [https://milkquality.streamlit.app/](https://milkquality.
 # Dataset
 
 [Milk quality prediction](https://www.kaggle.com/datasets/cpluzshrijayan/milkquality)
+
+# Models
+
+The models used and tests are shown in the [notebook](notebook.ipynb)
