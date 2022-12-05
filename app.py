@@ -8,7 +8,20 @@ import seaborn as sns
 from PIL import Image
 import random
 
-tpot = joblib.load(open("./models/tpot.joblib", "rb"))
+
+modelinfo = {
+    "Logistic Regression": "./models/LR.joblib",
+    "Support Vector Machine": "./models/SVM.joblib",
+    "K-Nearest Neighbor": "./models/KNN.joblib",
+    "Decision Trees": "./models/DT.joblib",
+    "Random Forest": "./models/rf.joblib",
+    "Multi-layer Perceptron": "./models/mlpc.joblib",
+    "Support Vector Machine (Tuned)": "./models/tuned_svm.joblib",
+    "Gradient Boosting Classifier (Tuned)": "./models/tpot.joblib"
+}
+models = {}
+for i, v in modelinfo.items():
+    models[i] = joblib.load(open(v, "rb"))
 
 
 def data_preprocessor(df):
@@ -115,18 +128,6 @@ def get_user_input():
     return data, model
 
 
-modelinfo = {
-    "Logistic Regression": "",
-    "Support Vector Machine": "",
-    "K-Nearest Neighbor": "",
-    "Decision Trees": "",
-    "Random Forest": "",
-    "Multi-layer Perceptron": "",
-    "Support Vector Machine (Tuned)": "",
-    "Gradient Boosting Classifier (Tuned)": ""
-}
-
-
 user_input_df, model = get_user_input()
 processed_user_input = data_preprocessor(user_input_df).copy()
 
@@ -138,7 +139,7 @@ st.write(user_input_df.set_index("Model used"))
 
 
 st.subheader('Prediction')
-prediction_proba = tpot.predict_proba(processed_user_input)
+prediction_proba = models[model].predict_proba(processed_user_input)
 visualize_confidence_level(prediction_proba)
 
 
