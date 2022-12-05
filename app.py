@@ -6,8 +6,9 @@ from matplotlib.ticker import StrMethodFormatter
 import streamlit as st
 import seaborn as sns
 from PIL import Image
+import random
 
-model = joblib.load(open("model-v1.joblib", "rb"))
+tpot = joblib.load(open("./models/tpot.joblib", "rb"))
 
 
 def data_preprocessor(df):
@@ -77,6 +78,18 @@ def get_user_input():
     return type : pandas dataframe
     """
 
+    models = (
+        "Logistic Regression",
+        "Support Vector Machine",
+        "K-Nearest Neighbor",
+        "Decision Trees",
+        "Random Forest",
+        "Multi-layer Perceptron",
+        "Support Vector Machine (Tuned)",
+        "Gradient Boosting Classifier (Tuned)"
+    )
+    model = st.sidebar.selectbox("Model", models)
+
     pH = st.sidebar.slider('pH', min_value=6.0, value=6.6, max_value=7.0)
     Temperature = st.sidebar.slider(
         'Temperature (°C)', min_value=34.0, value=37.0, max_value=50.0)
@@ -96,19 +109,39 @@ def get_user_input():
         'Turbidity': Turbidity,
         'Colour': Colour,
     }
+
     data = pd.DataFrame(features, index=[0])
 
-    return data
+    return data, model
 
 
-user_input_df = get_user_input()
-processed_user_input = data_preprocessor(user_input_df)
+modelinfo = {
+    "Logistic Regression": "",
+    "Support Vector Machine": "",
+    "K-Nearest Neighbor": "",
+    "Decision Trees": "",
+    "Random Forest": "",
+    "Multi-layer Perceptron": "",
+    "Support Vector Machine (Tuned)": "",
+    "Gradient Boosting Classifier (Tuned)": ""
+}
+
+
+user_input_df, model = get_user_input()
+processed_user_input = data_preprocessor(user_input_df).copy()
 
 st.subheader('User Input parameters')
-st.write(user_input_df)
+
+user_input_df.replace({0: "Bad", 1: "Good"}, inplace=True)
+user_input_df["Model used"] = model
+st.write(user_input_df.set_index("Model used"))
+
 
 st.subheader('Prediction')
-# prediction = model.predict(processed_user_input)
-prediction_proba = model.predict_proba(processed_user_input)
-
+prediction_proba = tpot.predict_proba(processed_user_input)
 visualize_confidence_level(prediction_proba)
+
+
+st.subheader('Dataset')
+st.write(
+    "The dataset used can be found here: https://www.kaggle.com/datasets/cpluzshrijayan/milkquality")
