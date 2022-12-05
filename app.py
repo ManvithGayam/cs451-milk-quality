@@ -35,7 +35,7 @@ def data_preprocessor(df):
     return df
 
 
-def visualize_confidence_level(prediction_proba):
+def visualize_confidence_level(prediction_proba, model):
     """
     this function uses matplotlib to create inference bar chart rendered with streamlit in real-time
     return type : matplotlib bar chart
@@ -63,10 +63,10 @@ def visualize_confidence_level(prediction_proba):
         ax.axvline(x=tick, linestyle='dashed',
                    alpha=0.4, color='#eeeeee', zorder=1)
 
-    ax.set_xlabel(" Percentage(%) Confidence Level",
+    ax.set_xlabel("Prediction Confidence Level (%)",
                   labelpad=2, weight='bold', size=12)
     ax.set_ylabel("Milk Quality", labelpad=10, weight='bold', size=12)
-    ax.set_title('Prediction Confidence Level ', fontdict=None,
+    ax.set_title(model, fontdict=None,
                  loc='center', pad=None, weight='bold')
 
     pred = grad_percentage["Grade"][grad_percentage["Percentage"].idxmax()]
@@ -132,15 +132,22 @@ user_input_df, model = get_user_input()
 processed_user_input = data_preprocessor(user_input_df).copy()
 
 st.subheader('User Input parameters')
-
 user_input_df.replace({0: "Bad", 1: "Good"}, inplace=True)
-user_input_df["Model used"] = model
-st.write(user_input_df.set_index("Model used"))
+st.write(user_input_df)
 
 
 st.subheader('Prediction')
 prediction_proba = models[model].predict_proba(processed_user_input)
-visualize_confidence_level(prediction_proba)
+visualize_confidence_level(prediction_proba, model)
+
+model_df = {}
+for parameter in models[model].get_params():
+    v = models[model].get_params()[parameter]
+    model_df[parameter] = v
+model_df = pd.DataFrame([model_df])
+
+st.subheader('Model Hyperparameters')
+st.write(model_df)
 
 
 st.subheader('Dataset')
