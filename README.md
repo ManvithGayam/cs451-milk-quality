@@ -2,8 +2,7 @@
 
 - Code witten in python
 - model trainned with AutoML using TPOT
-- web application built with Streamlit
-- Application Hosted on Heroku
+- web application built with and hosted on Streamlit
   All the dependences can be found in the requirements.txt
 
 App link on streamlit: [https://milkquality.streamlit.app/](https://milkquality.streamlit.app/)
