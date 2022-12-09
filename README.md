@@ -1,5 +1,5 @@
 # A Machine Learning Web Application to predict the quality of milk
-
+[![DOI](https://zenodo.org/badge/574072612.svg)](https://zenodo.org/badge/latestdoi/574072612)
 - Code witten in python
 - model trainned with AutoML using TPOT
 - web application built with and hosted on Streamlit
